@@ -63,6 +63,16 @@ def run():
     snake = init_snake()
     print 'init success'
     while True:
+        if check(snake[0].pos,screen_size):
+            text = 'you lose'
+            while True:
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        exit()
+                font_surface = my_font.render(text, True, (255, 255, 255))
+                font_size = font_surface.get_size()
+                screen.blit(font_surface, ((screen_size[0] - font_size[0])/ 2, (screen_size[1] - font_size[1]) / 2))
+                pygame.display.update()
         for event in pygame.event.get():
             if event.type == QUIT:
                 exit()
@@ -79,28 +89,10 @@ def run():
                 elif event.key == K_RIGHT:
                     ball_direction.y = 0
                     ball_direction.x = 1
-        print 'before update:'
-        for body in snake:
-            print body.pos, id(body.pos)
-        print '\n'
-        update(snake)
-        print 'after update:'
-        for body in snake:
-            print body.pos,id(body.pos)
-        print '\n'
         time_passed = clock.tick() / 1000.0
         distance = ball_direction * time_passed * speed
+        #time.sleep(100. / 1000.)
         snake[0].pos += distance
-        if check(snake[0].pos,screen_size):
-            text = 'you lose'
-            while True:
-                for event in pygame.event.get():
-                    if event.type == QUIT:
-                        exit()
-                font_surface = my_font.render(text, True, (255, 255, 255))
-                font_size = font_surface.get_size()
-                screen.blit(font_surface, ((screen_size[0] - font_size[0])/ 2, (screen_size[1] - font_size[1]) / 2))
-                pygame.display.update()
         screen.fill((0,0,0))
         for body in snake:
             print body.pos,
